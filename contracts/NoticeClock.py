@@ -16,7 +16,7 @@ def valid_id(value: str) -> bool:
 
 def consensus(prompt, normalize):
     """Compare independently extracted material facts, not free-form prose."""
-    def extract():
+    def leader():
         for attempt in range(2):
             try:
                 raw = gl.nondet.exec_prompt(prompt + ("\nReturn JSON only." if attempt else ""), response_format="json")
@@ -25,20 +25,19 @@ def consensus(prompt, normalize):
                 pass
         raise gl.vm.UserError("No valid grounded extraction")
 
-    def leader():
-        return extract()
-
     def validator(result):
         if not isinstance(result, gl.vm.Return):
             return False
-        try:
-            # Result is canonical and already derived from frozen input.
-            # The validator recomputes the entire result independently.
-            return result.calldata == extract()
-        except gl.vm.UserError:
-            return False
+        for attempt in range(2):
+            try:
+                raw = gl.nondet.exec_prompt(prompt + ("\nReturn JSON only." if attempt else ""), response_format="json")
+                return result.calldata == normalize(raw)
+            except (gl.nondet.NondetException, ValueError, KeyError, TypeError, OverflowError):
+                pass
+        return False
 
     return gl.vm.run_nondet(leader, validator)
+
 
 # Pure Gregorian arithmetic. Day zero: 2000-01-01 (Saturday).
 KINDS = ("RECEIPT", "DELIVERY", "ACCEPTANCE", "DISPATCH")
@@ -120,9 +119,13 @@ def normalize_rule(raw, clause):
     if basis not in ("BUSINESS","CALENDAR") or trigger not in KINDS or counting not in ("EXCLUDE_EVENT","INCLUDE_EVENT"):
         raise ValueError("Unsupported rule")
     q = clause.lower()
+    if re.search(r"\b(?:unless|except|if|otherwise|or|not|never|before|until|whichever|earlier|later|extend|extension)\b|\bsubject to\b|\bprovided that\b", q):
+        raise ValueError("Conditional or conflicting rule")
+    if len(re.findall(r"\b(?:[0-9]+|" + "|".join(WORDS) + r")\s+(?:business|calendar)\s+days?\b", q)) != 1:
+        raise ValueError("Exactly one explicit duration required")
     # Literal binding of the count to its unit; implicit "days" is not supported.
     unit = "business" if basis == "BUSINESS" else "calendar"
-    if not re.search(r"(?<![\w.])" + re.escape(token.lower()) + r"\s+" + unit + r"\s+days?\b", q):
+    if not re.search(r"(?<![\w.+-])" + re.escape(token.lower()) + r"\s+" + unit + r"\s+days?\b", q):
         raise ValueError("Count/unit not supported by clause")
     triggers = {"RECEIPT":r"\breceipt\b|\breceived\b","DELIVERY":r"\bdelivery\b|\bdelivered\b",
                 "ACCEPTANCE":r"\bacceptance\b|\baccepted\b","DISPATCH":r"\bdispatch\b|\bdispatched\b"}
@@ -151,10 +154,10 @@ class NoticeClock(gl.contract.Contract):
         try:
             ordinal(event_date)
             if int(event_date[:4]) > 2099 or len(holidays_json) > 3000:
-                raise ValueError("Event or calendar outside bounds")
+                raise gl.vm.UserError("Invalid event date or holiday calendar")
             holidays = json.loads(holidays_json)
             if not isinstance(holidays, list) or len(holidays) > 128 or len(set(holidays)) != len(holidays):
-                raise ValueError("Invalid holiday list")
+                raise gl.vm.UserError("Invalid event date or holiday calendar")
             for h in holidays:
                 ordinal(h)
         except (ValueError, TypeError):

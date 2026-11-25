@@ -74,3 +74,15 @@ def test_leap_calendar_and_invalid_inputs(direct_vm,direct_deploy,direct_alice):
     mock(direct_vm,dict(RULE,count_token="2",basis="CALENDAR",quote=clause))
     c.compile_deadline("leap")
     assert json.loads(c.get_certificate("leap"))["deadline"] == "2028-03-01"
+
+
+def test_conditional_clause_cannot_be_compiled_by_forged_ready(direct_vm,direct_deploy,direct_alice):
+    clause = CLAUSE + " Unless the parties agree otherwise."
+    c = setup(direct_vm,direct_deploy,direct_alice,clause=clause)
+    mock(direct_vm,dict(RULE,quote=clause))
+    with direct_vm.expect_revert("No valid grounded extraction"):
+        c.compile_deadline("case-a")
+    assert c.get_certificate("case-a") == ""
+    mock(direct_vm,{"status":"REVIEW"})
+    c.compile_deadline("case-a")
+    assert json.loads(c.get_certificate("case-a"))["status"] == "REVIEW"
