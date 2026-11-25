@@ -65,5 +65,15 @@
       "trigger": "RECEIPT"
     },
     "status": "COMPILED"
+  },
+  "review_certificate": {
+    "case_id": "nc-review",
+    "deadline": "",
+    "input_sha256": "542514d8d55474bdf3fddf839d0bd0453b7a5c8eafdf495db28c12e047da896b",
+    "reason": "AMBIGUOUS_OR_UNSUPPORTED",
+    "rule": {
+      "status": "REVIEW"
+    },
+    "status": "REVIEW"
   }
 }

@@ -1,7 +1,7 @@
 # NOTICECLOCK V2 — Studionet evidence, 2026-11-25
 
 ## Evidence scope
-The developer supplied Explorer transaction details for all ten workflow calls and Studio readbacks for the initial certificate and final obligation, extension and notice. All ten reported FINALIZED, Accepted / MAJORITY_AGREE, successful execution, Normal mode, five initial validators. These are developer-captured records, not an independent RPC verification or security audit. Deployment transaction hashes, deployed-source comparison and live negative-path tests have not been captured here. Eight direct-mode regression tests passed in [CI run 45559475793](https://github.com/bearbaba/NOTICECLOCK/actions/runs/45559475793); AI and external reads are mocked in those tests.
+The developer supplied Explorer transaction details for all ten workflow calls and Studio readbacks for the initial certificate and final obligation, extension and notice. All ten workflow calls reported FINALIZED, Accepted / MAJORITY_AGREE, successful execution, Normal mode, five initial validators. These are developer-captured records, not an independent RPC verification or security audit. Deployment transaction hashes, deployed-source comparison have not been captured here. Eight direct-mode regression tests passed in [CI run 45559475793](https://github.com/bearbaba/NOTICECLOCK/actions/runs/45559475793); AI and external reads are mocked in those tests.
 
 ## Contracts
 - NoticeClock: [Studio](https://studio.genlayer.com/?import-contract=0x6BbDd0A177F5790fdc1E4De23A346B07998FE3dD) / [Explorer](https://explorer-studio.genlayer.com/address/0x6BbDd0A177F5790fdc1E4De23A346B07998FE3dD)
@@ -27,4 +27,15 @@ Search the full hashes in [Explorer](https://explorer-studio.genlayer.com/). TX0
 ## Readback and reproduction
 Use the Studio links above. Call NoticeClock.get_certificate("nc-first"), DeadlineLedger.get_obligation("nc-obligation"), get_extension("nc-extension"), get_notice("nc-notice"). No write or signature is required for these views. The original deadline Nov 10 and approved extension Nov 12 are preserved in revision history; the mutually attested Nov 11 notice is ON_TIME under revision 2. See [captured JSON](readbacks-2026-11-25.json).
 
-The event, holiday and notice dates are synthetic claims. They do not establish actual receipt or actual sending time. No live unauthorized transaction or ambiguous-rule case has been executed in this evidence set. The test suite covers negative paths, including wrong signer, self-approval, changed trigger, certificate mismatch and ambiguous/conditional rule.
+The event, holiday and notice dates are synthetic claims. They do not establish actual receipt or actual sending time. No live unauthorized transaction has been executed in this evidence set. The ambiguity case below was executed live. The test suite covers negative paths, including wrong signer, self-approval, changed trigger, certificate mismatch and ambiguous/conditional rule.
+
+## Live ambiguity test (negative path)
+
+Wallet B froze `nc-review` with clause `Respond promptly.`, event RECEIPT, date 2026-11-02 and holidays `[]`.
+
+| TX | Method | Hash | Reported result |
+|---|---|---|---|
+| 11 | freeze_case | `0xc1e0ef5fa0ecc729cc1fa690d6934f461c81596c19ba9cb0b5ec8314795f2602` | FINALIZED / Accepted / SUCCESS |
+| 12 | compile_deadline | `0xd6b2e84a7d7af1b51946d80e300911664e4e5f12ea89883229150ecfd3bdb19f` | FINALIZED / Accepted / SUCCESS |
+
+TX12 equivalence output: `{"status":"REVIEW"}`. Read `NoticeClock.get_certificate("nc-review")`: status REVIEW, empty deadline, reason AMBIGUOUS_OR_UNSUPPORTED. Full captured certificate is in the JSON evidence file. All 12 calls succeeded; the last two intentionally produce no valid deadline. This proves the tested ambiguity path, not all possible adversarial inputs.

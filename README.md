@@ -10,7 +10,7 @@ Deploy NoticeClock first, then DeadlineLedger with the actual NoticeClock addres
 
 ## Studionet evidence — 25 November 2026
 
-The developer's captured Explorer records show 10/10 successful finalized workflow transactions across both deployed contracts and two signers. Final Studio readbacks show revision 2, APPROVED extension, preserved original deadline (2026-11-10), new deadline (2026-11-12) and ON_TIME for the attested notice date 2026-11-11. See [full transaction evidence](docs/evidence.md) and [captured readbacks](docs/readbacks-2026-11-25.json). These are not an independent source audit or live adversarial test.
+The developer's captured Explorer records show 12/12 successful finalized transactions (10 workflow and 2 ambiguity-test calls) across both deployed contracts and two signers. Final Studio readbacks show revision 2, APPROVED extension, preserved original deadline (2026-11-10), new deadline (2026-11-12) and ON_TIME for the attested notice date 2026-11-11. See [full transaction evidence](docs/evidence.md) and [captured readbacks](docs/readbacks-2026-11-25.json). A separate live ambiguity test (nc-review, 'Respond promptly.') finalized with REVIEW and an empty deadline. These are developer-captured records, not an independent source audit; other adversarial paths remain tested in CI.
 
 ## Example (synthetic)
 Deploy `contracts/NoticeClock.py` in [GenLayer Studio](https://studio.genlayer.com/), no constructor args. Use Studionet test tokens.
