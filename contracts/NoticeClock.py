@@ -197,6 +197,10 @@ class NoticeClock(gl.contract.Contract):
         self.certificates[case_id] = json.dumps(cert, sort_keys=True)
 
     @gl.public.view
+    def get_protocol_version(self) -> str:
+        return "noticeclock-v2"
+
+    @gl.public.view
     def get_case(self, case_id: str) -> str:
         return self.cases.get(case_id, "")
 
