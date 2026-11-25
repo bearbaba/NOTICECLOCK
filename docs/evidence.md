@@ -1,4 +1,4 @@
-# NOTICECLOCK V2 — Studionet evidence, 2026-11-25
+# NOTICECLOCK — Studionet evidence, 2026-11-25
 
 ## Evidence scope
 The developer supplied Explorer transaction details for all ten workflow calls and Studio readbacks for the initial certificate and final obligation, extension and notice. All ten workflow calls reported FINALIZED, Accepted / MAJORITY_AGREE, successful execution, Normal mode, five initial validators. These are developer-captured records, not an independent RPC verification or security audit. Deployment transaction hashes, deployed-source comparison have not been captured here. Eight direct-mode regression tests passed in [CI run 45559475793](https://github.com/bearbaba/NOTICECLOCK/actions/runs/45559475793); AI and external reads are mocked in those tests.

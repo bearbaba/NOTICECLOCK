@@ -1,4 +1,6 @@
-# V2 Studionet walkthrough (expected, not yet executed)
+# NOTICECLOCK — Studionet walkthrough
+
+The ten workflow calls were executed on 25 November 2026; see [captured evidence](evidence.md).
 
 Deploy NoticeClock (no args); deploy DeadlineLedger(anchor_address=NoticeClock address). Use two distinct wallets A and B and fresh IDs.
 
