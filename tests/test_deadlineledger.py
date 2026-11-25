@@ -1,10 +1,9 @@
 import hashlib
 import json
-from genlayer.types import Address
 
 
 def seal(data,cert):
-    data=dict(data)
+    data={k:v for k,v in data.items() if k!='input_sha256'}
     data["input_sha256"]=hashlib.sha256(json.dumps(data,sort_keys=True).encode("utf-8")).hexdigest()
     return data,dict(cert,case_id=data["case_id"],input_sha256=data["input_sha256"])
 
@@ -19,9 +18,10 @@ def mock_view(monkeypatch, records, protocol):
     monkeypatch.setattr(gl.contract,"get_at",lambda _:View())
 
 def setup(vm,deploy,alice,bob,monkeypatch):
+    c=deploy("contracts/DeadlineLedger.py","0x"+"9"*40)
+    from genlayer.types import Address
     owner=Address(alice).as_hex.lower()
     other=Address(bob).as_hex.lower()
-    c=deploy("contracts/DeadlineLedger.py","0x"+"9"*40)
     records={}
     for cid,deadline,actor in (("initial","2026-11-10",owner),("extended","2026-11-12",other),("shorter","2026-11-09",owner),("bad","2026-11-13",owner)):
         records[cid]=seal({"case_id":cid,"owner":actor,"event_date":"2026-11-02","event_kind":"DELIVERY" if cid=="bad" else "RECEIPT","holidays":["2026-11-05"]},{"status":"COMPILED","deadline":deadline})
