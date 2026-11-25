@@ -2,6 +2,12 @@
 
 A reusable GenLayer primitive for turning one explicit notice clause into a deterministic date certificate. AI extracts the rule; it never computes the date. No frontend, oracle, external model API key or payments.
 
+## V2: two linked Intelligent Contracts
+
+**NoticeClock** compiles grounded deadlines. **DeadlineLedger** reads the actual immutable case and certificate from the configured NoticeClock address, checks protocol and SHA-256 input binding, and creates a two-party obligation. The counterparty must accept it. Either signer may propose a new compiled certificate with the same original trigger and holiday calendar; only the other signer may approve. The deadline must move later. A notice freezes the active certificate and revision; the counterparty confirms ON_TIME/LATE or disputes it. No extension after filing. IDs and certificates cannot be reused. Maximum 32 revisions. This is a two-party attestation state machine, not trusted timestamps, legal advice or an oracle.
+
+Deploy NoticeClock first, then DeadlineLedger with the actual NoticeClock address. Use the V2 sources together. See [V2 walkthrough](docs/v2-walkthrough.md).
+
 ## Example (synthetic)
 Deploy `contracts/NoticeClock.py` in [GenLayer Studio](https://studio.genlayer.com/), no constructor args. Use Studionet test tokens.
 1. `freeze_case("notice-01", "The notice must be submitted within five business days after receipt.", "RECEIPT", "2026-11-02", "[\"2026-11-05\"]")`
