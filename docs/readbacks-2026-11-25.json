@@ -1,0 +1,69 @@
+{
+  "obligation": {
+    "active_case": "nc-next",
+    "active_deadline": "2026-11-12",
+    "counterparty": "0xd6b8a3a5eb329410d9504784812b8569afa8c2af",
+    "event_date": "2026-11-02",
+    "event_kind": "RECEIPT",
+    "filing_id": "nc-notice",
+    "history": [
+      {
+        "case_id": "nc-first",
+        "deadline": "2026-11-10",
+        "input_sha256": "ce096db29731f5815713e5cf9f5b871dd537328cfd2b4ec5f106a6c39c1bd414"
+      },
+      {
+        "case_id": "nc-next",
+        "deadline": "2026-11-12",
+        "input_sha256": "96aa48cb5d93bc73d7bd8c5f0c1c452aec280c0267f41c7c06b2e58351c8b0ce"
+      }
+    ],
+    "holidays": [
+      "2026-11-05"
+    ],
+    "initial_case": "nc-first",
+    "obligation_id": "nc-obligation",
+    "owner": "0x4c7cb73ac8f8999af21cfc9ff4cf2333a9508dcb",
+    "pending_extension": "",
+    "revision": 2,
+    "status": "ON_TIME"
+  },
+  "extension": {
+    "base_revision": 1,
+    "case_id": "nc-next",
+    "deadline": "2026-11-12",
+    "input_sha256": "96aa48cb5d93bc73d7bd8c5f0c1c452aec280c0267f41c7c06b2e58351c8b0ce",
+    "obligation_id": "nc-obligation",
+    "proposal_id": "nc-extension",
+    "proposed_by": "0xd6b8a3a5eb329410d9504784812b8569afa8c2af",
+    "resolved_by": "0x4c7cb73ac8f8999af21cfc9ff4cf2333a9508dcb",
+    "status": "APPROVED"
+  },
+  "notice": {
+    "case_id": "nc-next",
+    "deadline": "2026-11-12",
+    "evidence": "Synthetic notice reference N-001",
+    "evidence_sha256": "f301acc6ed99b287c91b004ccbf301b3dbfbb8ce82942998a95b1707e2002a25",
+    "filing_id": "nc-notice",
+    "obligation_id": "nc-obligation",
+    "observed_date": "2026-11-11",
+    "resolved_by": "0xd6b8a3a5eb329410d9504784812b8569afa8c2af",
+    "revision": 2,
+    "status": "ON_TIME"
+  },
+  "initial_certificate": {
+    "case_id": "nc-first",
+    "deadline": "2026-11-10",
+    "input_sha256": "ce096db29731f5815713e5cf9f5b871dd537328cfd2b4ec5f106a6c39c1bd414",
+    "reason": "DEADLINE_COMPUTED",
+    "rule": {
+      "basis": "BUSINESS",
+      "counting": "EXCLUDE_EVENT",
+      "days": 5,
+      "quote": "The notice must be submitted within five business days after receipt.",
+      "status": "READY",
+      "trigger": "RECEIPT"
+    },
+    "status": "COMPILED"
+  }
+}

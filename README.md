@@ -8,6 +8,10 @@ A reusable GenLayer primitive for turning one explicit notice clause into a dete
 
 Deploy NoticeClock first, then DeadlineLedger with the actual NoticeClock address. Use the V2 sources together. See [V2 walkthrough](docs/v2-walkthrough.md).
 
+## Studionet evidence — 25 November 2026
+
+The developer's captured Explorer records show 10/10 successful finalized workflow transactions across both deployed contracts and two signers. Final Studio readbacks show revision 2, APPROVED extension, preserved original deadline (2026-11-10), new deadline (2026-11-12) and ON_TIME for the attested notice date 2026-11-11. See [full transaction evidence](docs/evidence.md) and [captured readbacks](docs/readbacks-2026-11-25.json). These are not an independent source audit or live adversarial test.
+
 ## Example (synthetic)
 Deploy `contracts/NoticeClock.py` in [GenLayer Studio](https://studio.genlayer.com/), no constructor args. Use Studionet test tokens.
 1. `freeze_case("notice-01", "The notice must be submitted within five business days after receipt.", "RECEIPT", "2026-11-02", "[\"2026-11-05\"]")`
@@ -27,4 +31,4 @@ English, one unconditional rule, explicit calendar/business days, 1–366; numer
 `genvm-lint lint contracts/NoticeClock.py`
 `genvm-lint check contracts/NoticeClock.py`
 `pytest -q tests/`
-Direct-mode tests use mocked model output and replay independent validators; they do not prove live AI performance. See [evidence status](docs/evidence.md).
+Direct-mode tests use mocked model output and replay independent validators; they do not prove live AI performance. See [Studionet evidence](docs/evidence.md).
